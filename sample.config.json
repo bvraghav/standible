@@ -1,0 +1,296 @@
+{
+  "fmt"                          : {
+    "scene"                      : "Scene",
+    "view"                       : "{name}-View",
+    "collection"                 : "{name}-Collection",
+    "world"                      : "World",
+    "camera"                     : "Camera",
+    "g_camera"                   : "Gnomon-Camera",
+    "light"                      : "Light",
+    "plane"                      : "{geom}-Plane",
+    "payload"                    : "{geom}-Payload",
+    "gnomon"                     : "{geom}-Gnomon",
+    "material"                   : "{name}",
+    "texture"                    : "{basename}-{tone}",
+    "node_group"                 : "{name}",
+    "output"                     : "{prefix}/{index:03d}.png",
+    "lineset"                    : "{name}-Lineset",
+    "linestyle"                  : "Linestyle"
+  },
+  "textures"                     : {
+    "prefix"                     : "/path/to/textures",
+    "image_node_name"            : "Image Texture",
+    "origin_node_name"           : "Mapping",
+    "image_mapping"              : {
+      "shade"                    : {
+        "mat"                    : "hatch",
+        "node"                   : "Group.001",
+        "group"                  : "Shade",
+        "tone"                   : "shade"
+      },
+      "midto"                    : {
+        "mat"                    : "hatch",
+        "node"                   : "Group.002",
+        "group"                  : "Midtones",
+        "tone"                   : "mid"
+      },
+      "highl"                    : {
+        "mat"                    : "hatch",
+        "node"                   : "Group.003",
+        "group"                  : "Highlights",
+        "tone"                   : "high"
+      },
+      "shado"                    : {
+        "mat"                    : "shado",
+        "node"                   : "Group.001",
+        "group"                  : "Shadow",
+        "tone"                   : "shadow"
+      },
+      "shami"                    : {
+        "mat"                    : "shado",
+        "node"                   : "Group.002",
+        "group"                  : "ShadowMidtones",
+        "tone"                   : "mid"
+      }
+    }
+  },
+  "materials"                    : {
+    "white"                      : {"name": "AllWhite"},
+    "hatch"                      : {"name": "Hatch",
+      "textures"                 : ["shade", "midto", "highl"]
+    },
+    "shado"                      : {"name": "ShadowCatcher_null",
+      "textures"                 : ["shado", "shami"]
+    },
+    "gnomo"                      : {"name": "DiffuseBsdf"},
+    "highl"                      : {"name": "HighlightMask", "type": "mask",
+      "src"                      : {"material": "hatch", "node_group": "Group.003"},
+      "target"                   : {"node": "Material Output"}
+    },
+    "midto"                      : {"name": "MidtonesMask", "type": "mask",
+      "src"                      : {"material": "hatch", "node_group": "Group.002"},
+      "target"                   : {"node": "Material Output"}
+    },
+    "shade"                      : {"name": "ShadeMask", "type": "mask",
+      "src"                      : {"material": "hatch", "node_group": "Group.001"},
+      "target"                   : {"node": "Material Output"}
+    },
+    "shama"                      : {"name": "ShadowMask", "type": "mask",
+      "src"                      : {"material": "shado", "node_group": "Group.001"},
+      "target"                   : {"node": "Mix Shader"}
+    },
+    "shami"                      : {"name": "ShadowMidtonesMask", "type": "mask",
+      "src"                      : {"material": "shado", "node_group": "Group.002"},
+      "target"                   : {"node": "Mix Shader"}
+    },
+    "diffu"                      : {"name": "DiffuseBsdf"}
+  },
+  "collections"                  : {
+    "contour"                    : {"name": "Contour",
+      "materials"                : {"plane": "white", "payload": "white"}
+    },
+    "sketch"                     : {"name": "Sketch",
+      "materials"                : {"plane": "shado", "payload": "hatch"}
+    },
+    "highlights"                 : {"name": "Highlights",
+      "materials"                : {"plane": "white", "payload": "highl"}
+    },
+    "midtones"                   : {"name": "Midtones",
+      "materials"                : {"plane": "white", "payload": "midto"}
+    },
+    "shades"                     : {"name": "Shades",
+      "materials"                : {"plane": "white", "payload": "shade"}
+    },
+    "shadow"                     : {"name": "Shadow",
+      "materials"                : {"plane": "shama", "payload": "white"}
+    },
+    "diffuse"                    : {"name": "Diffuse",
+      "materials"                : {"plane": "diffu", "payload": "diffu"}
+    },
+    "gnomon"                     : {"name": "Gnomon",
+      "materials"                : {"gnomon": "gnomo"}
+    },
+    "freestyle"                  : {"name": "Freestyle"},
+    "sketch_geom"                : {"name": "SketchGeom",
+      "materials"                : {"payload": "hatch"}
+    },
+    "sketch_geom_no_free"        : {"name": "SketchGeomNoFree",
+      "materials"                : {"payload": "hatch"}
+    },
+    "sketch_no_free"             : {"name": "SketchNoFree",
+      "materials"                : {"plane": "shado", "payload": "hatch"}
+    }
+  },
+  "views"                        : {
+    "contour"                    : {"name": "Contour",
+      "collections"              : ["contour", "freestyle"]
+    },
+    "gnomon"                     : {"name": "Gnomon",
+      "collections"              : ["gnomon"]
+    },
+    "sketch"                     : {"name": "Sketch",
+      "collections"              : ["sketch", "freestyle"]
+    },
+    "highlights"                 : {"name": "Highlights",
+      "collections"              : ["highlights", "freestyle"]
+    },
+    "midtones"                   : {"name": "Midtones",
+      "collections"              : ["midtones", "freestyle"]
+    },
+    "shades"                     : {"name": "Shades",
+      "collections"              : ["shades", "freestyle"]
+    },
+    "shadow"                     : {"name": "Shadow",
+      "collections"              : ["shadow", "freestyle"]
+    },
+    "diffuse"                    : {"name": "Diffuse",
+      "collections"              : ["diffuse"]
+    },
+    "sketch_geom"                : {"name": "SketchGeom",
+      "collections"              : ["sketch_geom" , "freestyle"]
+    },
+    "sketch_geom_no_free"        : {"name": "SketchGeomNoFree",
+      "collections"              : ["sketch_geom_no_free"]
+    },
+    "sketch_no_free"             : {"name": "SketchNoFree",
+      "collections"              : ["sketch_no_free"]
+    }
+  },
+  "light"                        : {
+    "distance"                   : {"range": [5, 7]},
+    "altitude"                   : {"range": [0.19635, 1.37445]},
+    "azimuth"                    : {"range": [-3.14159, 3.14159]},
+    "target"                     : [0,0,0.5],
+    "blender"                    : {
+      "color"                    : "#ffffff",
+      "energy"                   : 1000,
+      "specular"                 : 1.0,
+      "shape"                    : "RECTANGLE",
+      "size"                     : 1.0,
+      "size_y"                   : 1.0,
+      "use_shadow"               : true,
+      "shadow_buffer_bias"       : 0.001,
+      "use_contact_shadow"       : true,
+      "contact_shadow_distance"  : 0.1
+    }
+  },
+  "camera"                       : {
+    "distance"                   : {"range": [5, 7]},
+    "altitude"                   : {"range": [0.19635, 1.37445]},
+    "azimuth"                    : {"range": [0, 0]},
+    "shift_x"                    : {"range": [-0.1, 0.1]},
+    "shift_y"                    : {"range": [-0.1, 0.1]},
+    "target"                     : [0,0,0.5],
+    "blender"                    : {
+      "lens"                     : 35.0,
+      "clip_start"               : 2.0,
+      "clip_end"                 : 12.0
+    }
+  },
+  "gnomon_camera"                : {
+    "location"                   : [0, 0, 5.56],
+    "orientation"                : {
+      "euler"                    : [0, 0, 1.5707963268]
+    },
+    "blender"                    : {
+      "type"                     : "ORTHO",
+      "ortho_scale"              : 4
+    }
+  },
+  "plane"                        : {
+    "scale"                      : 5
+  },
+  "geometry"                     : {
+    "rotation"                   : {"range": [-3.14159, 3.14159]},
+    "prefix"                     : "/path/to/stl_files",
+    "max_cu"                     : 8,
+    "max_bb"                     : 3,
+    "min_scale"                  : 0.8,
+    "import_axes"                : ["-Z", "Y"]
+  },
+  "gnomon": {
+    "geometry"                   : "/path/to/obj/or/stl",
+    "import_axes"                : ["Y", "Z"]
+  },
+  "renderer"                     : {
+    "render"                     : {
+      "engine"                   : "BLENDER_EEVEE",
+      "use_freestyle"            : true,
+      "line_thickness"           : 1.5,
+      "resolution_x"             : 256,
+      "resolution_y"             : 256,
+      "film_transparent"         : true,
+      "filter_size"              : 1
+    },
+    "eevee"                      : {
+      "shadow_cube_size"         : "2048",
+      "shadow_cascade_size"      : "4096",
+      "use_shadow_high_bitdepth" : true,
+      "use_soft_shadows"         : true,
+      "light_threshold"          : 0.005,
+      "use_overscan"             : true,
+      "overscan_size"            : 5
+    },
+    "world"                      : {
+      "use_nodes"                : false,
+      "color"                    : [0, 0, 0]
+    }
+  },
+  "freestyle"                    : {
+    "lineset"                    : {
+      "select_contour"           : true,
+      "select_edge_mark"         : true,
+      "select_external_contour"  : true,
+      "select_material_boundary" : true,
+      "select_by_collection"     : true
+    },
+    "linestyle"                  : {
+      "chaining"                 : "SKETCHY",
+      "rounds"                   : 3,
+      "thickness"                : 1.2
+    },
+    "linestyle_modifiers"        : {
+      "alpha_noise"              : {
+        "op"                     : "freestyle_alpha_modifier_add",
+        "type"                   : "NOISE",
+        "modifiers"              : "alpha_modifiers",
+        "name"                   : "Noise",
+        "attributes"             : {
+          "influence"            : 0.1,
+          "amplitude"            : 0.3,
+          "period"               : 100
+        }
+      },
+      "spatial_noise"            : {
+        "op"                     : "freestyle_geometry_modifier_add",
+        "type"                   : "SPATIAL_NOISE",
+        "modifiers"              : "geometry_modifiers",
+        "name"                   : "Spatial Noise",
+        "attributes"             : {
+          "amplitude"            : 2,
+          "scale"                : 25
+        }
+      },
+      "backbone_stretcher"       : {
+        "op"                     : "freestyle_geometry_modifier_add",
+        "type"                   : "BACKBONE_STRETCHER",
+        "modifiers"              : "geometry_modifiers",
+        "name"                   : "Backbone Stretcher",
+        "attributes"             : {
+          "backbone_length"      : 5
+        }
+      },
+      "thickness_noise"          : {
+        "op"                     : "freestyle_thickness_modifier_add",
+        "type"                   : "NOISE",
+        "modifiers"              : "thickness_modifiers",
+        "name"                   : "Noise",
+        "attributes"             : {
+          "influence"            : 0.1,
+          "amplitude"            : 1.5,
+          "period"               : 50
+        }
+      }
+    }
+  },
+}
